@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookshelf App</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+            },
+            colors: {
+              primary: "#1e88e5", // Warna biru dari CSS asli
+              primaryDark: "#1565c0", // Warna hover
+              bgLight: "#f9fbff", // Warna bg item buku
+            },
+          },
+        },
+      };
+    </script>
+
+    <script defer src="main.js"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-[#f2f7ff] to-[#dbe7ff] text-gray-800 min-h-screen flex flex-col items-center font-sans"
+  >
+    <header class="bg-primary text-white w-full py-6 text-center shadow-md">
+      <h1 class="text-3xl font-bold tracking-wide">Bookshelf App</h1>
+    </header>
+
+    <main class="w-[90%] max-w-[900px] my-8 flex flex-col gap-8">
+      <section class="bg-white rounded-xl p-6 shadow-lg">
+        <h2
+          class="mb-4 text-primary border-b-2 border-primary pb-2 text-xl font-semibold"
+        >
+          Tambah Buku Baru
+        </h2>
+        <form id="bookForm" data-testid="bookForm">
+          <div class="mb-4">
+            <label for="bookFormTitle" class="block font-semibold mb-1"
+              >Judul</label
+            >
+            <input
+              id="bookFormTitle"
+              type="text"
+              required
+              data-testid="bookFormTitleInput"
+              class="w-full p-2.5 border-[1.5px] border-gray-300 rounded-md text-base transition duration-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="bookFormAuthor" class="block font-semibold mb-1"
+              >Penulis</label
+            >
+            <input
+              id="bookFormAuthor"
+              type="text"
+              required
+              data-testid="bookFormAuthorInput"
+              class="w-full p-2.5 border-[1.5px] border-gray-300 rounded-md text-base transition duration-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="bookFormYear" class="block font-semibold mb-1"
+              >Tahun</label
+            >
+            <input
+              id="bookFormYear"
+              type="number"
+              required
+              data-testid="bookFormYearInput"
+              class="w-full p-2.5 border-[1.5px] border-gray-300 rounded-md text-base transition duration-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm"
+            />
+          </div>
+          <div class="mb-4 flex items-center">
+            <label
+              for="bookFormIsComplete"
+              class="block font-semibold mr-2 cursor-pointer"
+              >Selesai dibaca</label
+            >
+            <input
+              id="bookFormIsComplete"
+              type="checkbox"
+              data-testid="bookFormIsCompleteCheckbox"
+              class="scale-125 cursor-pointer accent-primary"
+            />
+          </div>
+          <button
+            id="bookFormSubmit"
+            type="submit"
+            data-testid="bookFormSubmitButton"
+            class="bg-primary text-white border-none rounded-md px-5 py-2.5 text-base cursor-pointer transition-all duration-200 hover:bg-primaryDark hover:scale-105 w-full sm:w-auto"
+          >
+            Masukkan Buku ke rak <span>Belum selesai dibaca</span>
+          </button>
+        </form>
+      </section>
+
+      <section class="bg-white rounded-xl p-6 shadow-lg">
+        <h2
+          class="mb-4 text-primary border-b-2 border-primary pb-2 text-xl font-semibold"
+        >
+          Cari Buku
+        </h2>
+        <form
+          id="searchBook"
+          data-testid="searchBookForm"
+          class="flex flex-col sm:block"
+        >
+          <label for="searchBookTitle" class="block font-semibold mb-1"
+            >Judul</label
+          >
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input
+              id="searchBookTitle"
+              type="text"
+              data-testid="searchBookFormTitleInput"
+              class="flex-1 p-2.5 border-[1.5px] border-gray-300 rounded-md text-base transition duration-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm"
+            />
+            <button
+              id="searchSubmit"
+              type="submit"
+              data-testid="searchBookFormSubmitButton"
+              class="bg-primary text-white border-none rounded-md px-5 py-2.5 text-base cursor-pointer transition-all duration-200 hover:bg-primaryDark hover:scale-105 w-full sm:w-auto"
+            >
+              Cari
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="bg-white rounded-xl p-6 shadow-lg">
+        <h2
+          class="mb-4 text-primary border-b-2 border-primary pb-2 text-xl font-semibold"
+        >
+          Belum selesai dibaca
+        </h2>
+
+        <div
+          id="incompleteBookList"
+          data-testid="incompleteBookList"
+          class="grid gap-4"
+        >
+          <div
+            data-bookid="123123123"
+            data-testid="bookItem"
+            class="bg-bgLight border-[1.5px] border-slate-200 rounded-lg p-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          >
+            <h3
+              data-testid="bookItemTitle"
+              class="text-lg text-primary font-bold mb-2"
+            >
+              Judul Buku 1
+            </h3>
+            <p data-testid="bookItemAuthor" class="text-gray-600 mb-1 text-sm">
+              Penulis: Penulis Buku 1
+            </p>
+            <p data-testid="bookItemYear" class="text-gray-600 mb-1 text-sm">
+              Tahun: 2030
+            </p>
+            <div class="mt-4 flex flex-col sm:flex-row gap-2">
+              <button
+                data-testid="bookItemIsCompleteButton"
+                class="bg-green-500 text-white rounded-md px-3 py-2 hover:bg-green-600 transition hover:scale-105 text-sm w-full sm:w-auto"
+              >
+                Selesai dibaca
+              </button>
+              <button
+                data-testid="bookItemDeleteButton"
+                class="bg-red-500 text-white rounded-md px-3 py-2 hover:bg-red-600 transition hover:scale-105 text-sm w-full sm:w-auto"
+              >
+                Hapus Buku
+              </button>
+              <button
+                data-testid="bookItemEditButton"
+                class="bg-yellow-500 text-white rounded-md px-3 py-2 hover:bg-yellow-600 transition hover:scale-105 text-sm w-full sm:w-auto"
+              >
+                Edit Buku
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl p-6 shadow-lg">
+        <h2
+          class="mb-4 text-primary border-b-2 border-primary pb-2 text-xl font-semibold"
+        >
+          Selesai dibaca
+        </h2>
+
+        <div
+          id="completeBookList"
+          data-testid="completeBookList"
+          class="grid gap-4"
+        >
+          <div
+            data-bookid="456456456"
+            data-testid="bookItem"
+            class="bg-bgLight border-[1.5px] border-slate-200 rounded-lg p-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          >
+            <h3
+              data-testid="bookItemTitle"
+              class="text-lg text-primary font-bold mb-2"
+            >
+              Judul Buku 2
+            </h3>
+            <p data-testid="bookItemAuthor" class="text-gray-600 mb-1 text-sm">
+              Penulis: Penulis Buku 2
+            </p>
+            <p data-testid="bookItemYear" class="text-gray-600 mb-1 text-sm">
+              Tahun: 2030
+            </p>
+            <div class="mt-4 flex flex-col sm:flex-row gap-2">
+              <button
+                data-testid="bookItemIsCompleteButton"
+                class="bg-green-500 text-white rounded-md px-3 py-2 hover:bg-green-600 transition hover:scale-105 text-sm w-full sm:w-auto"
+              >
+                Belum Selesai
+              </button>
+              <button
+                data-testid="bookItemDeleteButton"
+                class="bg-red-500 text-white rounded-md px-3 py-2 hover:bg-red-600 transition hover:scale-105 text-sm w-full sm:w-auto"
+              >
+                Hapus Buku
+              </button>
+              <button
+                data-testid="bookItemEditButton"
+                class="bg-yellow-500 text-white rounded-md px-3 py-2 hover:bg-yellow-600 transition hover:scale-105 text-sm w-full sm:w-auto"
+              >
+                Edit Buku
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
